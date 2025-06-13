@@ -11,6 +11,3 @@ RUN curl -fsSL https://rpm.nodesource.com/setup_22.x | bash - \
 RUN node -v \
  && npm -v \
  && tsc -v
-
-# Default command to run when the container starts
-CMD ["bash"]
