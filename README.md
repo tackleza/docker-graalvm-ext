@@ -1,29 +1,78 @@
-# GraalVM with native support + Extra Tools.
-### Please check the tags for more information.
+# GraalVM Extended Docker Images
 
-Docker Hub: https://hub.docker.com/r/tackleza/graalvm-ext
+![GraalVM](https://img.shields.io/badge/GraalVM-Ready-orange)
 
-This was build on top of tackleza/graalvm (https://hub.docker.com/r/tackleza/graalvm)
+Docker images for Oracle GraalVM Community Edition on AlmaLinux 9, with additional development tools pre-installed.
 
-You will find AlmaLinux and graalvm in many version
+**Docker Hub:** https://hub.docker.com/r/tackleza/graalvm-ext
 
-### Installed Tools
-- NodeJS
-- TypeScript (Installed Global via npx)
+Built on top of [`tackleza/graalvm`](https://hub.docker.com/r/tackleza/graalvm).
 
-### For testing java version. You can execute by
-    docker run -it tackleza/graalvm-ext:22-almalinux
+## Available Tags
 
-**Output:** `java version "22" 2024-03-19
-Java(TM) SE Runtime Environment Oracle GraalVM 22+36.1 (build 22+36-jvmci-b02)
-Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 22+36.1 (build 22+36-jvmci-b02, mixed mode, sharing)`
+| Tag | Description |
+|-----|-------------|
+| `25-almalinux` | GraalVM 25 (JDK 25) on AlmaLinux 9 |
+| `24-almalinux` | GraalVM 24 (JDK 24) on AlmaLinux 9 |
+| `21-almalinux` | GraalVM 21 (JDK 21) on AlmaLinux 9 |
+| `17-almalinux` | GraalVM 17 (JDK 17) on AlmaLinux 9 |
+| `latest` | Alias for `25-almalinux` |
 
-### If you want to access bash (terminal) You can execute by
-    docker run -it tackleza/graalvm-ext:22-almalinux bash
+## Included Tools
 
-**Output:** `[root@26f1596c9dc1 /]#`
+In addition to GraalVM:
 
-### If you want to execute multiple command in bash (terminal) here some example
-    docker run -it tackleza/graalvm-ext:22-almalinux bash -c "echo 1; echo 2"
+- **Node.js 22** — via [nodesource](https://github.com/nodesource/distributions)
+- **TypeScript** — globally available via `npx`
 
-**Output:** `1 2`
+## Usage
+
+### Check Java Version
+
+```bash
+docker run -it tackleza/graalvm-ext:25-almalinux
+```
+
+```
+openjdk version "25" 2026-01-21
+OpenJDK Runtime Environment GraalVM CE 25.0.2 (build 25.0.2-jvmci-b02)
+Java HotSpot(TM) 64-Bit Server VM GraalVM CE 25.0.2 (build 25.0.2-jvmci-b02, mixed mode, sharing)
+```
+
+### Check Node.js Version
+
+```bash
+docker run -it tackleza/graalvm-ext:25-almalinux node -v
+```
+
+```
+v22.14.0
+```
+
+### Interactive Shell
+
+```bash
+docker run -it tackleza/graalvm-ext:25-almalinux bash
+```
+
+### Run a Command
+
+```bash
+docker run -it tackleza/graalvm-ext:25-almalinux bash -c "java -version && node -v"
+```
+
+## Example Tags
+
+### GraalVM 24
+
+```bash
+docker run -it tackleza/graalvm-ext:24-almalinux
+```
+
+## Base Image
+
+These images extend [`tackleza/graalvm`](https://hub.docker.com/r/tackleza/graalvm) — use them when you need both JVM and Node.js in the same container.
+
+## License
+
+GraalVM Community Edition is licensed under the [GraalVM Community License](https://www.oracle.com/downloads/licenses/graal-virtual-license.html).
