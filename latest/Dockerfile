@@ -1,4 +1,4 @@
-FROM tackleza/graalvm:24-almalinux
+FROM tackleza/graalvm:25-almalinux
 
 # ——— Install Node.js & Global TypeScript ———
 
