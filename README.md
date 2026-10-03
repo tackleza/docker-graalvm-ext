@@ -66,6 +66,34 @@ docker run -it tackleza/graalvm-ext:25-almalinux bash
 docker run -it tackleza/graalvm-ext:25-almalinux bash -c "java -version && node -v"
 ```
 
+## Timezone
+
+All supported tags include timezone data (`tzdata`) and default to **UTC**.
+Set the `TZ` environment variable to a valid IANA timezone name to select another
+zone. For Thailand, use `Asia/Bangkok` (UTC+07:00).
+
+### Docker example: Bangkok / Thailand
+
+```bash
+docker run --rm -e TZ=Asia/Bangkok tackleza/graalvm-ext:25-almalinux date
+```
+
+### Docker Compose example
+
+```yaml
+services:
+  app:
+    image: tackleza/graalvm-ext:25-almalinux
+    environment:
+      TZ: Asia/Bangkok
+    command: ["date"]
+```
+
+`TZ` sets the default timezone for OS tools and Java. An explicit Java option such
+as `-Duser.timezone=UTC` overrides the JVM default; application-specific timezone
+settings may also override it. Recreate the container after changing its `TZ`
+environment variable.
+
 ## Example Tags
 
 ### GraalVM 24
