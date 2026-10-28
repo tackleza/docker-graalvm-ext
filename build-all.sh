@@ -1,5 +1,4 @@
-bash -c "cd 17-almalinux; sh build.sh; sh push.sh"
-bash -c "cd 21-almalinux; sh build.sh; sh push.sh"
-bash -c "cd 24-almalinux; sh build.sh; sh push.sh"
-bash -c "cd 25-almalinux; sh build.sh; sh push.sh"
-bash -c "cd latest; sh build.sh; sh push.sh"
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec sh "$SCRIPT_DIR/build-supported.sh" "$@"

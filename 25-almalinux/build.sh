@@ -1,2 +1,4 @@
-#!/bin/bash
-docker build --pull -t tackleza/graalvm-ext:25-almalinux .
+#!/bin/sh
+set -eu
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec sh "$SCRIPT_DIR/../build-supported.sh" 25-almalinux

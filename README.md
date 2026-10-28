@@ -7,7 +7,7 @@
 | GitHub | https://github.com/tackleza/docker-graalvm-ext |
 | Docker Hub | https://hub.docker.com/r/tackleza/graalvm-ext |
 
-Docker images for Oracle GraalVM Community Edition on AlmaLinux 9, with additional development tools pre-installed.
+Docker images for Oracle GraalVM on AlmaLinux 9, with additional development tools pre-installed.
 
 **Docker Hub:** https://hub.docker.com/r/tackleza/graalvm-ext
 
@@ -17,18 +17,48 @@ Built on top of [`tackleza/graalvm`](https://hub.docker.com/r/tackleza/graalvm).
 
 | Tag | Description |
 |-----|-------------|
-| `25-almalinux` | GraalVM 25 (JDK 25) on AlmaLinux 9 |
-| `24-almalinux` | GraalVM 24 (JDK 24) on AlmaLinux 9 |
-| `21-almalinux` | GraalVM 21 (JDK 21) on AlmaLinux 9 |
-| `17-almalinux` | GraalVM 17 (JDK 17) on AlmaLinux 9 |
+| `25-almalinux` | Oracle GraalVM JDK 25 LTS; minimum 25.0.5.0.3 |
+| `24-almalinux` | Retired source; excluded from supported builds |
+| `21-almalinux` | Retired source; excluded from supported builds |
+| `17-almalinux` | Retired source; excluded from supported builds |
 | `latest` | Alias for `25-almalinux` |
 
 ## Included Tools
 
 In addition to GraalVM:
 
-- **Node.js 22** — via [nodesource](https://github.com/nodesource/distributions)
+- **Node.js 24 LTS (24.22.1 minimum)** — via [nodesource](https://github.com/nodesource/distributions)
 - **TypeScript** — globally available via `npx`
+
+## Security updates (2026-10-28)
+
+Only `25-almalinux` and `latest` are rebuilt and published by CI. Historical
+17/21 downloads were frozen on old security releases, and JDK 24 is non-LTS.
+Their build scripts now stop with migration guidance. A fresh Oracle GraalVM
+21 download may require different licensing terms; this project does not
+silently migrate it or assume an entitlement. Test JDK 25 compatibility.
+
+`sh build-supported.sh` pulls and rebuilds supported images without cache,
+checks the resulting runtime, and does not push. Add `--push` to publish only
+after every requested image passes. CI runs daily and on push/manual dispatch.
+Builds fail closed unless Java reports **25.0.5.0.3 or newer in 25.x**, the
+corrected October 26 security patch. A stale download endpoint or published
+parent therefore cannot produce a newly tagged unpatched image.
+
+Verification on 2026-10-28: the Oracle `25/latest` download and the published
+`tackleza/graalvm:25-almalinux` parent both reported **25.0.4**, so the new
+minimum-version check rejected them. No patched GraalVM image was produced.
+The Oracle archive URL for 25.0.5.0.3 returned HTTP 404. Obtain an available
+corrected Oracle artifact (the base Dockerfile accepts `GRAALVM_TAR_URL`),
+verify/build the base, publish it, then rebuild the extended images.
+
+This source update does not patch published images, running services, or native
+executables built with older Native Image toolchains. Rebuild affected native
+executables with the patched toolchain and redeploy consumers separately.
+
+Sources: [Oracle GraalVM 25 release notes](https://docs.oracle.com/en/graalvm/jdk/25/docs/release-notes/),
+[release calendar](https://www.graalvm.org/release-calendar/),
+[Oracle GraalVM licensing](https://www.oracle.com/downloads/licenses/graal-free-license.html).
 
 ## Usage
 
@@ -39,9 +69,8 @@ docker run -it tackleza/graalvm-ext:25-almalinux
 ```
 
 ```
-openjdk version "25" 2026-01-21
-OpenJDK Runtime Environment GraalVM CE 25.0.2 (build 25.0.2-jvmci-b02)
-Java HotSpot(TM) 64-Bit Server VM GraalVM CE 25.0.2 (build 25.0.2-jvmci-b02, mixed mode, sharing)
+Expected: Oracle GraalVM JDK 25.0.5.0.3 or newer in 25.x.
+Verify the actual output for each image build.
 ```
 
 ### Check Node.js Version
@@ -51,7 +80,7 @@ docker run -it tackleza/graalvm-ext:25-almalinux node -v
 ```
 
 ```
-v22.14.0
+v24.22.1 (minimum required; verify the image you build)
 ```
 
 ### Interactive Shell
@@ -96,10 +125,10 @@ environment variable.
 
 ## Example Tags
 
-### GraalVM 24
+### GraalVM 25 LTS
 
 ```bash
-docker run -it tackleza/graalvm-ext:24-almalinux
+docker run -it tackleza/graalvm-ext:25-almalinux
 ```
 
 ## Base Image
@@ -108,4 +137,4 @@ These images extend [`tackleza/graalvm`](https://hub.docker.com/r/tackleza/graal
 
 ## License
 
-GraalVM Community Edition is licensed under the [GraalVM Community License](https://www.oracle.com/downloads/licenses/graal-virtual-license.html).
+The downloaded Oracle GraalVM distribution is subject to its [Oracle GraalVM license terms](https://www.oracle.com/downloads/licenses/graal-free-license.html); it is not Community Edition.
