@@ -7,7 +7,7 @@ RUN dnf upgrade -y \
     && curl -fsSL https://rpm.nodesource.com/setup_24.x -o /tmp/setup-node.sh \
     && bash /tmp/setup-node.sh \
     && dnf install -y nodejs \
-    && node -e 'const [major, minor, patch] = process.versions.node.split(".").map(Number); if (major !== 24 || minor < 22 || (minor === 22 && patch < 1)) throw new Error("Node 24.22.1 or newer in 24.x required")' \
+    && node -e 'const [major, minor, patch] = process.versions.node.split(".").map(Number); if (major !== 24 || minor < 22 || (minor === 22 && patch < 3)) throw new Error("Node 24.22.3 or newer in 24.x required")' \
     && npm install -g typescript \
     && rm /tmp/setup-node.sh \
     && dnf clean all

@@ -138,3 +138,9 @@ These images extend [`tackleza/graalvm`](https://hub.docker.com/r/tackleza/graal
 ## License
 
 The downloaded Oracle GraalVM distribution is subject to its [Oracle GraalVM license terms](https://www.oracle.com/downloads/licenses/graal-free-license.html); it is not Community Edition.
+
+## November 2026 runtime security update
+
+The supported `25-almalinux` and `latest` variants continue installing NodeSource 24.x and now reject versions older than 24.22.3. Historical variants remain outside the supported build list.
+
+Build and validate locally before publishing. Existing containers require recreation after an approved rollout. Reference: https://nodejs.org/en/blog/vulnerability/november-2026-security-releases.
